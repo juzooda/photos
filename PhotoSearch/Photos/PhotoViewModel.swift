@@ -50,11 +50,11 @@ class PhotosViewModel: PhotosViewModelProtocol {
                 self.currentPage += 1
                 self.loadingPhoto = true
                 self.photoService.fetchPhotos(search: self.searchInput, page: 1) { [weak self] (photoModel, error) in
+                    self?.loadingPhoto = false
                     guard let photoModel = photoModel, !photoModel.photo.isEmpty else {
                         return
                     }
                     self?.photos.append(contentsOf: photoModel.photo)
-                    self?.loadingPhoto = false
                 }
             }
         }

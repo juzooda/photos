@@ -15,13 +15,20 @@ class URLSessionProtocolMock: URLSessionProtocol {
     
     func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         if withError {
-            completionHandler(nil, nil, NSError(domain: "", code: -1001, userInfo: nil))
+            completionHandler(nil, nil, errorMock())
         }else {
             let data = PayloadLoader.open(payloadName: "fotosMock", ofType: "json")
             completionHandler(data, nil, nil)
         }
         
-        return URLSession.shared.dataTask(with: url)
+        return dataTaskMock()
     }
 }
 
+func errorMock() -> Error {
+    return NSError(domain: "", code: -1001, userInfo: nil)
+}
+
+func dataTaskMock() -> URLSessionDataTask {
+    return URLSession.shared.dataTask(with: URL(string:"http://booble.com")!)
+}

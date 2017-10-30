@@ -10,14 +10,15 @@ import UIKit
 
 class SearchViewController: UITableViewController {
 
-    let searchController = UISearchController(searchResultsController: nil)
-    var searchInputs = Set<String>() {
+    private let searchController = UISearchController(searchResultsController: nil)
+
+    private var searchInputs = Set<String>() {
         didSet{
-            datasorce = Array(searchInputs)
+            updateDataSource()
         }
     }
     
-    var datasorce = [String]() {
+    private var datasorce = [String]() {
         willSet {
             self.datasorce = newValue.sorted(by: { $0 < $1 })
         }
@@ -28,7 +29,15 @@ class SearchViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Setup the Search Controller
+        setupSearchBar()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        filterWithTextOnSerchBar()
+    }
+    
+    func setupSearchBar() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search Photos"
@@ -37,6 +46,24 @@ class SearchViewController: UITableViewController {
         searchController.searchBar.delegate = self
     }
     
+    func updateDataSource() {
+        datasorce = Array(searchInputs)
+    }
+    
+    func filterWithTextOnSerchBar() {
+        if let currentSearchBarText = searchController.searchBar.text {
+            if (currentSearchBarText.isEmpty) {
+                updateDataSource()
+            }else {
+                datasorce = searchInputs.filter({ $0.contains(currentSearchBarText)})
+            }
+        }
+    }
+}
+
+//MARK: UITableViewDataSource
+
+extension SearchViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return datasorce.count
     }
@@ -46,30 +73,21 @@ class SearchViewController: UITableViewController {
         cell.textLabel?.text = datasorce[indexPath.row]
         return cell
     }
-    
+}
+
+//MARK: UITableViewDelegate
+
+extension SearchViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         navigateToResultsVC(searchInput: datasorce[indexPath.row])
     }
-    
-    func searchBarIsEmpty() -> Bool {
-        return searchController.searchBar.text?.isEmpty ?? true
-    }
-    
-    func isFiltering() -> Bool {
-        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
-        return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
-    }
-    
-    func filterPastSearchList() {
-        if let currentSearchBarText = searchController.searchBar.text {
-            datasorce = searchInputs.filter({ $0.contains(currentSearchBarText)})
-        }
-    }
 }
+
+//MARK: UISearchBar
 
 extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
-        filterPastSearchList()
+        filterWithTextOnSerchBar()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -78,7 +96,11 @@ extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
             navigateToResultsVC(searchInput: search)
         }
     }
-    
+}
+
+//MARK : - Router
+
+extension SearchViewController {
     func navigateToResultsVC(searchInput: String) {
         let resultsViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ResultsViewController") as! PhotosViewController
         resultsViewController.title = searchInput

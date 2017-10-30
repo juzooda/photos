@@ -16,13 +16,15 @@ private let photoBaseUrl = "https://farm%@.static.flickr.com/%@/%@_%@.jpg"
 
 struct FlickrEndpoint {
     static func searchPhotosUrl(input: String, page: Int) -> URL {
-        let formattedUrl = String(format: searchBaseUrl, searchMethod, apiKey, format, input, "\(page)")
+        let encodedString = input.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!
+        let formattedUrl = String(format: searchBaseUrl, searchMethod, apiKey, format, encodedString, "\(page)")
         return URL(string: formattedUrl)!
     }
     
     static func photoUrl(farm: Int, server: String, id: String, secret: String) -> URL {
         let formattedUrl = String(format: photoBaseUrl, "\(farm)", server, id, secret)
-        return URL(string: formattedUrl)!
+        let encodedString = formattedUrl.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!
+        return URL(string: encodedString)!
     }
 }
 

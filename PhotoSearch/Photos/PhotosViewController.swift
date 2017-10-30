@@ -21,14 +21,14 @@ class PhotosViewController: UIViewController, PhotosViewProtocol {
     var viewModel: PhotosViewModelProtocol!
     var dataSource = [PhotoModel]()
     
+    //MARK: UIViewController Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         viewModel.fetchPhotos()
     }
+    
+    //MARK: View Model Updates
     
     func update(dataSource: [PhotoModel]) {
         self.dataSource = dataSource
@@ -39,11 +39,15 @@ class PhotosViewController: UIViewController, PhotosViewProtocol {
         active ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
     }
     
+    //MARK: Transition Landscape/Portrait
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView.collectionViewLayout.invalidateLayout()
         super.viewWillTransition(to: size, with: coordinator)
     }
 }
+
+//MARK: - UICollectionViewDataSource
 
 extension PhotosViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -58,6 +62,8 @@ extension PhotosViewController: UICollectionViewDataSource {
     }
 }
 
+//MARK: - UICollectionViewDelegateFlowLayout - Cell size calculation
+
 extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -69,6 +75,8 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: verticeSize, height: verticeSize)
     }
 }
+
+//MARK: - UIScrollViewDelegate - Fetch photos on the bottom.
 
 extension PhotosViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
