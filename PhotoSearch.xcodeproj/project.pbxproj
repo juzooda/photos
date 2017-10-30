@@ -111,8 +111,8 @@
 		E7C698C31FA49FAC0085FEF9 /* PhotoSearch */ = {
 			isa = PBXGroup;
 			children = (
-				E7A816D41FA69A1500AE422A /* Search */,
 				E7C698E91FA4A4070085FEF9 /* PhotosService */,
+				E7A816D41FA69A1500AE422A /* Search */,
 				E7C698E41FA4A3BC0085FEF9 /* Photos */,
 				E7C698C41FA49FAC0085FEF9 /* AppDelegate.swift */,
 				E7C698C81FA49FAC0085FEF9 /* Main.storyboard */,

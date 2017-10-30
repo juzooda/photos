@@ -9,14 +9,24 @@
 import Foundation
 
 protocol PhotosViewModelProtocol: class {
-    func fetchPhotos(page: Int)
+    func fetchPhotos()
 }
 
 class PhotosViewModel: PhotosViewModelProtocol {
     
     let photoService: FlickrServiceProtocol
-    let searchInput: String
     weak var view: PhotosViewProtocol!
+    let searchInput: String
+    var currentPage: Int
+    
+    var loadingPhoto: Bool{
+        didSet {
+            DispatchQueue.main.async {
+                self.view.updateActivityIndicatorState(active: self.loadingPhoto)
+            }
+        }
+    }
+    
     
     var photos: [PhotoModel] = [] {
         didSet {
@@ -30,15 +40,22 @@ class PhotosViewModel: PhotosViewModelProtocol {
         self.searchInput = searchInput
         self.photoService = photoService
         self.view = view
+        self.currentPage = 0
+        self.loadingPhoto = false
     }
     
-    func fetchPhotos(page: Int) {
+    func fetchPhotos() {
         DispatchQueue.global(qos: .userInitiated).async {
-            self.photoService.fetchPhotos(search: self.searchInput) { [weak self] (photoModel, error) in
-                guard let photoModel = photoModel, !photoModel.photo.isEmpty else {
-                    return
+            if !self.loadingPhoto {
+                self.currentPage += 1
+                self.loadingPhoto = true
+                self.photoService.fetchPhotos(search: self.searchInput, page: 1) { [weak self] (photoModel, error) in
+                    guard let photoModel = photoModel, !photoModel.photo.isEmpty else {
+                        return
+                    }
+                    self?.photos.append(contentsOf: photoModel.photo)
+                    self?.loadingPhoto = false
                 }
-                self?.photos = photoModel.photo
             }
         }
     }

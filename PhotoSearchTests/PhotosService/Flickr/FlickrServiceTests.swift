@@ -22,7 +22,7 @@ class FlickrServiceTests: XCTestCase {
     func testFetchPhotos() {
         urlSessionMock.withError = false
         let ex = expectation(description: "fetchPhotos completion block")
-        _ = subject.fetchPhotos(search: "Anything") { (photoModel, error) in
+        _ = subject.fetchPhotos(search: "Anything", page: 1) { (photoModel, error) in
             ex.fulfill()
             XCTAssertNotNil(photoModel)
             XCTAssertNil(error)
@@ -49,7 +49,7 @@ class FlickrServiceTests: XCTestCase {
     func testFetchPhotosError() {
         urlSessionMock.withError = true
         let ex = expectation(description: "fetchPhotos completion block with error")
-        _ = subject.fetchPhotos(search: "Anything") { (photoModel, error) in
+        _ = subject.fetchPhotos(search: "Anything", page: 1) { (photoModel, error) in
             ex.fulfill()
             XCTAssertNotNil(error)
             XCTAssertNil(photoModel)

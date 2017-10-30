@@ -12,11 +12,11 @@ import XCTest
 class FlickrEndpointTests: XCTestCase {
     
     func testSearchPhotosUrlAssembly() {
-        let kittensSearch = FlickrEndpoint.searchPhotosUrl(input: "kittens")
-        XCTAssertEqual(kittensSearch.absoluteString, "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3e7cc266ae2b0e0d78e279ce8e361736&format=json&nojsoncallback=1&safe_search=1&text=kittens")
+        let kittensSearch = FlickrEndpoint.searchPhotosUrl(input: "kittens", page: 2)
+        XCTAssertEqual(kittensSearch.absoluteString, "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3e7cc266ae2b0e0d78e279ce8e361736&format=json&nojsoncallback=1&safe_search=1&text=kittens&page=2")
         
-        let emptySearch = FlickrEndpoint.searchPhotosUrl(input: "")
-        XCTAssertEqual(emptySearch.absoluteString, "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3e7cc266ae2b0e0d78e279ce8e361736&format=json&nojsoncallback=1&safe_search=1&text=")
+        let emptySearch = FlickrEndpoint.searchPhotosUrl(input: "", page: 1)
+        XCTAssertEqual(emptySearch.absoluteString, "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3e7cc266ae2b0e0d78e279ce8e361736&format=json&nojsoncallback=1&safe_search=1&text=&page=1")
     }
     
     func testPhotosUrlAssembly() {

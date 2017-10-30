@@ -11,12 +11,12 @@ import Foundation
 private let apiKey = "3e7cc266ae2b0e0d78e279ce8e361736"
 private let searchMethod = "flickr.photos.search"
 private let format = "json"
-private let searchBaseUrl = "https://api.flickr.com/services/rest/?method=%@&api_key=%@&format=%@&nojsoncallback=1&safe_search=1&text=%@"
+private let searchBaseUrl = "https://api.flickr.com/services/rest/?method=%@&api_key=%@&format=%@&nojsoncallback=1&safe_search=1&text=%@&page=%@"
 private let photoBaseUrl = "https://farm%@.static.flickr.com/%@/%@_%@.jpg"
 
 struct FlickrEndpoint {
-    static func searchPhotosUrl(input: String) -> URL {
-        let formattedUrl = String(format: searchBaseUrl, searchMethod, apiKey, format, input)
+    static func searchPhotosUrl(input: String, page: Int) -> URL {
+        let formattedUrl = String(format: searchBaseUrl, searchMethod, apiKey, format, input, "\(page)")
         return URL(string: formattedUrl)!
     }
     

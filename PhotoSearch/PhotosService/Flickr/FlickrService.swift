@@ -12,7 +12,7 @@ typealias FlickrCompletion = (_ photoModel: PhotosModel?, _ error: Error?) -> Vo
 
 protocol FlickrServiceProtocol {
     @discardableResult
-    func fetchPhotos(search: String, completion: @escaping FlickrCompletion) -> URLSessionDataTask
+    func fetchPhotos(search: String, page: Int, completion: @escaping FlickrCompletion) -> URLSessionDataTask
 }
 
 class FlickrService: FlickrServiceProtocol {
@@ -23,8 +23,8 @@ class FlickrService: FlickrServiceProtocol {
         self.urlSession = urlSession
     }
     
-    func fetchPhotos(search: String, completion: @escaping FlickrCompletion) -> URLSessionDataTask {
-        let searchUrl = FlickrEndpoint.searchPhotosUrl(input: search)
+    func fetchPhotos(search: String, page: Int, completion: @escaping FlickrCompletion) -> URLSessionDataTask {
+        let searchUrl = FlickrEndpoint.searchPhotosUrl(input: search, page: page)
         let dataTask = urlSession.dataTask(with: searchUrl) { (data, response, error) in
             guard
                 let data = data,
