@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol PhotosViewProtocol: class {
     func update(dataSource: [PhotoModel])
@@ -37,6 +38,11 @@ class PhotosViewController: UIViewController, PhotosViewProtocol {
     func updateActivityIndicatorState(active: Bool) {
         active ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
     }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView.collectionViewLayout.invalidateLayout()
+        super.viewWillTransition(to: size, with: coordinator)
+    }
 }
 
 extension PhotosViewController: UICollectionViewDataSource {
@@ -46,7 +52,21 @@ extension PhotosViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCellId", for: indexPath) as! PhotoCollectionViewCell
+        let model = dataSource[indexPath.row]
+        item.imageView.setFlickrPhoto(model: model)
         return item
+    }
+}
+
+extension PhotosViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.width
+        let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
+        let spacing = flowLayout?.minimumInteritemSpacing ?? 0
+        let availableSize = width - (spacing * 2)
+        let verticeSize = availableSize/3.0
+        return CGSize(width: verticeSize, height: verticeSize)
     }
 }
 

@@ -32,7 +32,7 @@ class SearchViewController: UITableViewController {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search Photos"
-        navigationItem.searchController = searchController
+        tableView.tableHeaderView = searchController.searchBar
         definesPresentationContext = true
         searchController.searchBar.delegate = self
     }
@@ -64,12 +64,6 @@ class SearchViewController: UITableViewController {
         if let currentSearchBarText = searchController.searchBar.text {
             datasorce = searchInputs.filter({ $0.contains(currentSearchBarText)})
         }
-    }
-
-    // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
 }
 
