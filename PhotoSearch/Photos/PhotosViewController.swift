@@ -57,7 +57,7 @@ extension PhotosViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCellId", for: indexPath) as! PhotoCollectionViewCell
         let model = dataSource[indexPath.row]
-        item.imageView.setFlickrPhoto(model: model)
+        item.imageView.setPhoto(model: model)
         return item
     }
 }

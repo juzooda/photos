@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias FlickrCompletion = (_ photoModel: PhotosModel?, _ error: Error?) -> Void
+typealias FlickrCompletion = (_ photoModel: FlickrPhotosModel?, _ error: Error?) -> Void
 
 protocol FlickrServiceProtocol {
     @discardableResult

@@ -26,7 +26,6 @@ class FlickrServiceTests: XCTestCase {
             ex.fulfill()
             XCTAssertNotNil(photoModel)
             XCTAssertNil(error)
-            XCTAssertEqual(photoModel!.page, 1)
             XCTAssertEqual(photoModel!.pages, 2053)
             XCTAssertEqual(photoModel!.perpage, 100)
             XCTAssertEqual(photoModel!.total, "205230")

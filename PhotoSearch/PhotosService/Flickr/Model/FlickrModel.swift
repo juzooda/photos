@@ -9,19 +9,19 @@
 import Foundation
 
 struct FlickrModel: Codable {
-    let photos: PhotosModel
+    let photos: FlickrPhotosModel
     let stat: String
 }
 
-struct PhotosModel: Codable {
+struct FlickrPhotosModel: Codable {
     let page: Int
     let pages: Int
     let perpage: Int
     let total: String
-    let photo: [PhotoModel]
+    let photo: [FlickrPhotoModel]
 }
 
-struct PhotoModel: Codable {
+struct FlickrPhotoModel: Codable, PhotoModel {
     let id: String
     let owner: String
     let secret: String
@@ -31,4 +31,8 @@ struct PhotoModel: Codable {
     let ispublic: Int
     let isfriend: Int
     let isfamily: Int
+    
+    var url: URL {
+        return FlickrEndpoint.photoUrl(farm: farm, server: server, id: id, secret: secret)
+    }
 }

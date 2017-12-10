@@ -17,7 +17,7 @@ class PhotoViewModelTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        subject = PhotosViewModel(searchInput: "Dogs", photoService: serviceMock, view: viewMock)
+        subject = PhotosViewModel(searchInput: "Dogs", flickrPhotoService: serviceMock, view: viewMock)
         XCTAssertNotNil(subject)
     }
     

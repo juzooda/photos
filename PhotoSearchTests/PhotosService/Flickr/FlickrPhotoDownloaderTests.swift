@@ -14,6 +14,6 @@ class FlickrPhotoDownloaderTests: XCTestCase {
     func testExtension() {
         let imageView = UIImageView()
         let model = photoModelMock()
-        imageView.setFlickrPhoto(model: model)
+        imageView.setPhoto(model: model)
     }
 }

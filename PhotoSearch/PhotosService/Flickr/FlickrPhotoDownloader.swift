@@ -10,8 +10,7 @@ import UIKit
 import Kingfisher
 
 extension UIImageView {
-    func setFlickrPhoto(model: PhotoModel) {
-        let url = FlickrEndpoint.photoUrl(farm: model.farm, server: model.server, id: model.id, secret: model.secret)
-        self.kf.setImage(with: url)
+    func setPhoto(model: PhotoModel) {
+        self.kf.setImage(with: model.url)
     }
 }

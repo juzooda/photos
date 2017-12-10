@@ -14,7 +14,7 @@ protocol PhotosViewModelProtocol: class {
 
 class PhotosViewModel: PhotosViewModelProtocol {
     
-    let photoService: FlickrServiceProtocol
+    let flickrPhotoService: FlickrServiceProtocol
     weak var view: PhotosViewProtocol!
     let searchInput: String
     var currentPage: Int
@@ -27,7 +27,6 @@ class PhotosViewModel: PhotosViewModelProtocol {
         }
     }
     
-    
     var photos: [PhotoModel] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -36,9 +35,9 @@ class PhotosViewModel: PhotosViewModelProtocol {
         }
     }
     
-    init(searchInput: String, photoService: FlickrServiceProtocol, view: PhotosViewProtocol) {
+    init(searchInput: String, flickrPhotoService: FlickrServiceProtocol, view: PhotosViewProtocol) {
         self.searchInput = searchInput
-        self.photoService = photoService
+        self.flickrPhotoService = flickrPhotoService
         self.view = view
         self.currentPage = 0
         self.loadingPhoto = false
@@ -49,12 +48,13 @@ class PhotosViewModel: PhotosViewModelProtocol {
             if !self.loadingPhoto {
                 self.currentPage += 1
                 self.loadingPhoto = true
-                self.photoService.fetchPhotos(search: self.searchInput, page: 1) { [weak self] (photoModel, error) in
+                self.flickrPhotoService.fetchPhotos(search: self.searchInput, page: 1) { [weak self] (photoModel, error) in
                     self?.loadingPhoto = false
                     guard let photoModel = photoModel, !photoModel.photo.isEmpty else {
                         return
                     }
-                    self?.photos.append(contentsOf: photoModel.photo)
+                    let photoModelList = photoModel.photo as [PhotoModel]
+                    self?.photos.append(contentsOf: photoModelList)
                 }
             }
         }

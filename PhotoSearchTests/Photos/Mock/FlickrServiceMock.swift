@@ -26,8 +26,8 @@ class FlickrServiceMock: FlickrServiceProtocol {
     }
 }
 
-func fotosModelMock() -> PhotosModel {
-    return PhotosModel(
+func fotosModelMock() -> FlickrPhotosModel {
+    return FlickrPhotosModel(
         page: 0,
         pages: 1,
         perpage: 100,
@@ -36,8 +36,8 @@ func fotosModelMock() -> PhotosModel {
     )
 }
 
-func photoModelMock() -> PhotoModel {
-     return PhotoModel(
+func photoModelMock() -> FlickrPhotoModel {
+     return FlickrPhotoModel(
         id: "1234",
         owner: "Rafael",
         secret: "Goldfinger",

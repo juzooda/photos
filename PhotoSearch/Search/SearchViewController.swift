@@ -104,7 +104,7 @@ extension SearchViewController {
     func navigateToResultsVC(searchInput: String) {
         let resultsViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ResultsViewController") as! PhotosViewController
         resultsViewController.title = searchInput
-        resultsViewController.viewModel = PhotosViewModel(searchInput:searchInput, photoService: FlickrService(), view: resultsViewController)
+        resultsViewController.viewModel = PhotosViewModel(searchInput:searchInput, flickrPhotoService: FlickrService(), view: resultsViewController)
         self.navigationController?.show(resultsViewController, sender: nil)
     }
 }
